@@ -1,3 +1,5 @@
+import { coordTransform } from "../coord.js"
+
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -26,13 +28,9 @@ let C = {
 	r: 20,
 };
 
-function coordTransform(x, y) {
-	return { x: canvas.width / 2 + x, y: canvas.height / 2 - y };
-}
-
 const drawFuncs = {
 	circle: ({ x, y, r }) => {
-		const { x: cx, y: cy } = coordTransform(x, y);
+		const [cx, cy] = coordTransform(x, y);
 
 		ctx.beginPath();
 		ctx.arc(cx, cy, r, 0, 2 * Math.PI);
@@ -43,8 +41,8 @@ const drawFuncs = {
 		ctx.fillText(`r=${r}`, cx, cy - r - 10);
 	},
 	line: ({ x1, y1, x2, y2 }) => {
-		const { x: sx, y: sy } = coordTransform(x1, y1);
-		const { x: ex, y: ey } = coordTransform(x2, y2);
+		const [sx, sy] = coordTransform(x1, y1);
+		const [ex, ey] = coordTransform(x2, y2);
 
 		ctx.beginPath();
 		ctx.moveTo(sx, sy);
@@ -52,7 +50,7 @@ const drawFuncs = {
 		ctx.stroke();
 	},
 	dot: ({ x, y }) => {
-		const { x: dx, y: dy } = coordTransform(x, y);
+		const [dx, dy] = coordTransform(x, y);
 
 		ctx.beginPath();
 		ctx.arc(dx, dy, 2, 0, 2 * Math.PI);
