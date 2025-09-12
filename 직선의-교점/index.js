@@ -1,4 +1,4 @@
-import { coordTransform } from "../coord.js"
+import { coordTransform } from "../coord.js";
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -11,11 +11,6 @@ const lines = [
 	{ a: 1, b: 0, color: "red" },
 	{ a: 3, b: -60, color: "blue" },
 ];
-
-// 가운데 (0, 0)
-function coordTransform(x, y) {
-	return [canvas.width / 2 + x, canvas.height / 2 - y];
-}
 
 function getIntersection(l1, l2) {
 	const adiff = l1.a - l2.a,
@@ -35,8 +30,8 @@ function drawLine(a, b, color) {
 	const prevColor = ctx.strokeStyle;
 	if (color) ctx.strokeStyle = color;
 	ctx.beginPath();
-	ctx.moveTo(...coordTransform(sx, sy));
-	ctx.lineTo(...coordTransform(ex, ey));
+	ctx.moveTo(...coordTransform(canvas, sx, sy));
+	ctx.lineTo(...coordTransform(canvas, ex, ey));
 	ctx.stroke();
 	ctx.strokeStyle = prevColor;
 }
@@ -60,10 +55,10 @@ function draw() {
 	// 교점 표시
 	const [x, y] = getIntersection(...lines);
 	ctx.beginPath();
-	ctx.arc(...coordTransform(x, y), 2, 0, 2 * Math.PI);
+	ctx.arc(...coordTransform(canvas, x, y), 2, 0, 2 * Math.PI);
 	ctx.fill();
 
-	ctx.fillText(`(${x}, ${y})`, ...coordTransform(x, y + 10));
+	ctx.fillText(`(${x}, ${y})`, ...coordTransform(canvas, x, y + 10));
 }
 
 const inputs = Array.from(document.querySelectorAll("input"));
