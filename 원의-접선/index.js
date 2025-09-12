@@ -1,4 +1,5 @@
-import { coordTransform } from "../coord.js"
+import { coordTransform } from "../coord.js";
+import { draw } from "../draw.js";
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -28,53 +29,11 @@ let C = {
 	r: 20,
 };
 
-const drawFuncs = {
-	circle: ({ x, y, r }) => {
-		const [cx, cy] = coordTransform(x, y);
-
-		ctx.beginPath();
-		ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-		ctx.stroke();
-
-		draw("dot", { x, y });
-
-		ctx.fillText(`r=${r}`, cx, cy - r - 10);
-	},
-	line: ({ x1, y1, x2, y2 }) => {
-		const [sx, sy] = coordTransform(x1, y1);
-		const [ex, ey] = coordTransform(x2, y2);
-
-		ctx.beginPath();
-		ctx.moveTo(sx, sy);
-		ctx.lineTo(ex, ey);
-		ctx.stroke();
-	},
-	dot: ({ x, y }) => {
-		const [dx, dy] = coordTransform(x, y);
-
-		ctx.beginPath();
-		ctx.arc(dx, dy, 2, 0, 2 * Math.PI);
-		ctx.fill();
-		ctx.fillText(`(${x}, ${y})`, dx, dy - 10);
-	},
-};
-
-function draw(type, args) {
-	const prevColor = ctx.fillStyle,
-		prevAlpha = ctx.globalAlpha;
-	const { color, alpha } = args;
-	if (color) ctx.fillStyle = ctx.strokeStyle = color;
-	if (alpha) ctx.globalAlpha = alpha;
-	drawFuncs[type](args);
-	ctx.fillStyle = ctx.strokeStyle = prevColor;
-	ctx.globalAlpha = prevAlpha;
-}
-
 function animate() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	// y축
-	draw("line", {
+	draw(ctx, "line", {
 		x1: 0,
 		y1: -canvas.height / 2,
 		x2: 0,
@@ -82,7 +41,7 @@ function animate() {
 	});
 
 	// x축
-	draw("line", {
+	draw(ctx, "line", {
 		x1: -canvas.width / 2,
 		y1: 0,
 		x2: canvas.width / 2,
@@ -91,7 +50,7 @@ function animate() {
 
 	// 한 점(P)을 지나는 접선 2개 구하기
 
-	draw("dot", { ...P });
+	draw(ctx, "dot", { ...P });
 
 	const a = Math.pow(C.x - P.x, 2) - Math.pow(C.r, 2),
 		b = -2 * (C.x - P.x) * (C.y - P.y),
@@ -104,14 +63,14 @@ function animate() {
 	const n1 = P.y - m1 * P.x,
 		n2 = P.y - m2 * P.x;
 
-	draw("line", {
+	draw(ctx, "line", {
 		x1: -(canvas.width / 2),
 		y1: m1 * -(canvas.width / 2) + n1,
 		x2: canvas.width / 2,
 		y2: m1 * (canvas.width / 2) + n1,
 		alpha: 0.5,
 	});
-	draw("line", {
+	draw(ctx, "line", {
 		x1: -(canvas.width / 2),
 		y1: m2 * -(canvas.width / 2) + n2,
 		x2: canvas.width / 2,
@@ -119,7 +78,7 @@ function animate() {
 		alpha: 0.5,
 	});
 
-	draw("circle", {
+	draw(ctx, "circle", {
 		...C,
 		color: "red",
 	});
