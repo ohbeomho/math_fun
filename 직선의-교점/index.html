@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>직선의 교점</title>
+		<link rel="stylesheet" href="../color-text.css" />
 		<style>
 			body {
 				margin: 0;
@@ -19,31 +20,19 @@
 			canvas {
 				border: 1px solid black;
 			}
-
-			.line {
-				font-weight: bold;
-			}
-
-			.line.red {
-				color: red;
-			}
-
-			.line.blue {
-				color: blue;
-			}
 		</style>
 	</head>
 	<body>
 		<canvas width="500" height="500"></canvas>
 		<div>
-			<label for="La"><span class="line red">직선 1</span> 기울기</label>
+			<label for="La"><b class="red">직선 1</b> 기울기</label>
 			<input type="number" data-target="0a" />
-			<label for="Lb"><span class="line red">직선 1</span> y절편</label>
+			<label for="Lb"><b class="red">직선 1</b> y절편</label>
 			<input type="number" data-target="0b" />
 			<br />
-			<label for="Ma"><span class="line blue">직선 2</span> 기울기</label>
+			<label for="Ma"><b class="blue">직선 2</b> 기울기</label>
 			<input type="number" data-target="1a" />
-			<label for="Mb"><span class="line blue">직선 2</span> y절편</label>
+			<label for="Mb"><b class="blue">직선 2</b> y절편</label>
 			<input type="number" data-target="1b" />
 		</div>
 
