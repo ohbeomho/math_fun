@@ -9,7 +9,20 @@
 	<body>
 		<canvas width="500" height="500"></canvas>
 		<div class="dist green"></div>
-		<!-- TODO: 이차함수 및 직선을 변경할 수 있게 입력하는 곳 만들기 -->
+		<div>
+			<div>
+				y = <b class="red">a</b>(x - <b class="red">p</b>)² +
+				<b class="red">q</b>
+			</div>
+			<div id="quad-func-preview"></div>
+			a: <input type="number" id="a" /><br />
+			p: <input type="number" id="p" /><br />
+			q: <input type="number" id="q" />
+			<div>y = <b class="blue">m</b>x + <b class="blue">n</b></div>
+			<div id="line-preview"></div>
+			m: <input type="number" id="m" /><br />
+			n: <input type="number" id="n" />
+		</div>
 
 		<script src="index.js" type="module"></script>
 	</body>

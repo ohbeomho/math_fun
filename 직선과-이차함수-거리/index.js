@@ -6,8 +6,26 @@ const ctx = canvas.getContext('2d')
 const distanceDisplay = document.querySelector('.dist')
 
 // https://www.mathcha.io/editor/8EGjoCWQUxztppN4mPuB2PrPVhl0GrQEhZ52Ykz
-const quad_func = { a: 1, p: 30, q: 20 }
+const quadFunc = { a: 1, p: 30, q: 20 }
 const line = { m: -2, n: -40 }
+
+const quadFuncInput = document.querySelectorAll('#a,#p,#q')
+const lineInput = document.querySelectorAll('#m,#n')
+
+const quadFuncPreview = document.getElementById('quad-func-preview')
+const linePrevie = document.getElementById('line-preview')
+
+const initInput = (inputs, target) =>
+	inputs.forEach((input) => {
+		input.value = target[input.id]
+		input.addEventListener('input', () => {
+			target[input.id] = input.valueAsNumber
+			update()
+		})
+	})
+
+initInput(quadFuncInput, quadFunc)
+initInput(lineInput, line)
 
 const pow2 = (x) => Math.pow(x, 2)
 
@@ -23,13 +41,14 @@ function getDistance(f, l) {
 	return [distance, k]
 }
 
-function drawLine({ m, n, color }) {
+function drawLine({ m, n, color, alpha }) {
 	draw(ctx, 'line', {
 		x1: -canvas.width,
 		y1: m * -canvas.width + n,
 		x2: canvas.width,
 		y2: m * canvas.width + n,
 		color,
+		alpha,
 	})
 }
 
@@ -61,7 +80,7 @@ function getIntersection(l1, l2) {
 }
 
 function update() {
-	const [distance, k] = getDistance(quad_func, line)
+	const [distance, k] = getDistance(quadFunc, line)
 
 	distanceDisplay.textContent = distance
 
@@ -84,23 +103,25 @@ function update() {
 	})
 
 	// 직선
-	drawLine(line)
-	drawLine({ m: line.m, n: k, color: 'blue' })
+	drawLine({ ...line, color: 'blue' })
 
 	// 이차함수 그래프
-	drawQuadFuncGraph(quad_func)
+	drawQuadFuncGraph(quadFunc)
 
-	// y = mx + k 와 y = f(x) 의 교점
-	const { a, p } = quad_func
-	const x1 = (2 * a * p + line.m) / 2,
-		y1 = line.m * x1 + k
+	if (distance > 0) {
+		drawLine({ m: line.m, n: k, alpha: 0.5 })
+		// y = mx + k 와 y = f(x) 의 교점
+		const { a, p } = quadFunc
+		const x1 = (2 * a * p + line.m) / (2 * a),
+			y1 = line.m * x1 + k
 
-	// 그 교점을 지나는 y = mx + k 와 수직인 직선과 y = mx + n 의 교점
-	const suzikLine = getSuzikLine(line, { x: x1, y: y1 })
-	const [x2, y2] = getIntersection(suzikLine, line)
+		// 그 교점을 지나는 y = mx + k 와 수직인 직선과 y = mx + n 의 교점
+		const suzikLine = getSuzikLine(line, { x: x1, y: y1 })
+		const [x2, y2] = getIntersection(suzikLine, line)
 
-	// 위 두 점을 이은 선분
-	draw(ctx, 'line', { x1, y1, x2, y2, color: 'green' })
+		// 위 두 점을 이은 선분
+		draw(ctx, 'line', { x1, y1, x2, y2, color: 'green' })
+	}
 }
 
 update()
