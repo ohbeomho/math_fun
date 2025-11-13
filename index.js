@@ -3,6 +3,7 @@ const pages = [
 	'원의-접선',
 	'직선과-이차함수-거리',
 	'직선의-교점',
+	'유형반복R-903번',
 ]
 for (let page of pages) {
 	const a = document.createElement('a')
